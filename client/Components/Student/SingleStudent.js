@@ -12,6 +12,11 @@ const SingleStudent = ({ selectedStudent }) => {
     campusName,
     campusId
   } = selectedStudent
+
+  if (!selectedStudent.id) {
+    return <div />
+  }
+
   return (
     <div className="container">
       <img src={imageUrl} />
@@ -36,11 +41,13 @@ const SingleStudent = ({ selectedStudent }) => {
 }
 
 const mapStateToProps = ({ campuses, students }, { match }) => {
+  if (!students[0]) {
+    return { selectedStudent: {} }
+  }
+
   const studentId = match.params.id
   const selectedStudent = students.find(student => student.id === studentId)
-  const campusName = campuses.find(
-    campus => campus.id === selectedStudent.campusId
-  ).name
+  const campusName = campuses.find(c => c.id === selectedStudent.campusId).name
   return {
     selectedStudent: { ...selectedStudent, campusName }
   }

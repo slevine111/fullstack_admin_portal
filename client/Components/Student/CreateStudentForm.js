@@ -23,7 +23,8 @@ const initialState = {
   lastname: '',
   email: '',
   imageUrl: '',
-  gpa: ''
+  gpa: '',
+  campusId: ''
 }
 
 class CreateCampusForm extends Component {
@@ -32,6 +33,13 @@ class CreateCampusForm extends Component {
     this.state = initialState
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  componentDidMount() {
+    const firstCampusName = document.querySelector('option').textContent
+    this.setState({
+      campusId: this.props.campuses.find(c => c.name === firstCampusName).id
+    })
   }
 
   handleChange({ target }) {
@@ -66,11 +74,35 @@ class CreateCampusForm extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         {arrayOfFields.map(field => createField(field))}
+        <div className="form-group">
+          <label htmlFor="campuses">Campuses</label>
+          <select
+            className="form-control"
+            id="campuses"
+            name="campusId"
+            onChange={this.handleChange}
+          >
+            {this.props.campuses.map(campus => {
+              const { id, name } = campus
+              return (
+                <option key={id} value={id}>
+                  {name}
+                </option>
+              )
+            })}
+          </select>
+        </div>
         <button type="submit" className="btn btn-primary">
           Submit
         </button>
       </form>
     )
+  }
+}
+
+const mapStateToProps = ({ campuses }) => {
+  return {
+    campuses: campuses.map(campus => ({ id: campus.id, name: campus.name }))
   }
 }
 
@@ -82,6 +114,6 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(CreateCampusForm)

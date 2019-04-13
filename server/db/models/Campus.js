@@ -23,8 +23,7 @@ const Campus = connection.define('campus', {
   },
   imageUrl: {
     type: Sequelize.STRING,
-    defaultValue:
-      'https://wustl.edu/wp-content/uploads/2014/09/danforth-aerial.jpg'
+    defaultValue: 'DefaultCampus.png'
   },
   description: Sequelize.TEXT
 })

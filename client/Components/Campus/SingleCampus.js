@@ -4,6 +4,11 @@ import TableOfData from '../Shared/TableOfData'
 
 const SingleCampus = ({ selectedCampus, studentsOfCampus }) => {
   const { name, address, imageUrl, description } = selectedCampus
+
+  if (!selectedCampus.id) {
+    return <div />
+  }
+
   return (
     <div className="container">
       <img src={imageUrl} />
@@ -32,6 +37,9 @@ const SingleCampus = ({ selectedCampus, studentsOfCampus }) => {
 }
 
 const mapStateToProps = ({ campuses, students }, { match }) => {
+  if (!campuses[0]) {
+    return { selectedCampus: {} }
+  }
   const campusId = match.params.id
   const selectedCampus = campuses.find(campus => campus.id === campusId)
   const studentsOfCampus = students
