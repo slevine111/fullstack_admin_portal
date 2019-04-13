@@ -16,7 +16,7 @@ router.post('/', (req, res, next) => {
 })
 
 router.delete('/:id', (req, res, next) => {
-  Student.destroy({ where: { id: Number(req.params.id) } })
+  Student.destroy({ where: { id: req.params.id } })
     .then(() => res.sendStatus(204))
     .catch(next)
 })

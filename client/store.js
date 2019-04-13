@@ -59,6 +59,14 @@ export const deleteCampusAndUpdate = itemId => {
   }
 }
 
+export const deleteStudentAndUpdate = studentId => {
+  return dispatch => {
+    return axios
+      .delete(`/api/students/${studentId}`)
+      .then(() => dispatch(deletedStudent(studentId)))
+  }
+}
+
 //reudcers
 const campusesReducer = (state = [], action) => {
   switch (action.type) {

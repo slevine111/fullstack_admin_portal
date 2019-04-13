@@ -1,39 +1,59 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import TableOfData from '../Shared/TableOfData'
+import { deleteCampusAndUpdate } from '../../store'
 
-const SingleCampus = ({ selectedCampus, studentsOfCampus }) => {
-  const { name, address, imageUrl, description } = selectedCampus
-
-  if (!selectedCampus.id) {
-    return <div />
+class SingleCampus extends Component {
+  constructor() {
+    super()
+    this.handleClick = this.handleClick.bind(this)
   }
 
-  return (
-    <div className="container">
-      <img src={imageUrl} />
-      <div>
-        <strong> Name: </strong> {name}
+  handleClick(id) {
+    return this.props.deleteCampusAndUpdate(id).then(() => {
+      this.props.history.push('/campuses')
+    })
+  }
+
+  render() {
+    const { selectedCampus, studentsOfCampus } = this.props
+    const { id, name, address, imageUrl, description } = selectedCampus
+    if (!selectedCampus.id) {
+      return <div />
+    }
+
+    return (
+      <div className="container">
+        <img src={imageUrl} />
+        <div>
+          <strong> Name: </strong> {name}
+        </div>
+        <div>
+          <strong> Address: </strong> {address}
+        </div>
+        <div>
+          <strong> Description: </strong> {description}
+        </div>
+        <div>
+          <button type="button" onClick={() => this.handleClick(id)}>
+            Delete Campus and Their Students
+          </button>
+        </div>
+
+        <TableOfData
+          data={studentsOfCampus}
+          dataHeaders={[
+            'Index',
+            'First Name',
+            'Last Name',
+            'Email',
+            'GPA',
+            'Campus'
+          ]}
+        />
       </div>
-      <div>
-        <strong> Address: </strong> {address}
-      </div>
-      <div>
-        <strong> Description: </strong> {description}
-      </div>
-      <TableOfData
-        data={studentsOfCampus}
-        dataHeaders={[
-          'Index',
-          'First Name',
-          'Last Name',
-          'Email',
-          'GPA',
-          'Campus'
-        ]}
-      />
-    </div>
-  )
+    )
+  }
 }
 
 const mapStateToProps = ({ campuses, students }, { match }) => {
@@ -42,6 +62,9 @@ const mapStateToProps = ({ campuses, students }, { match }) => {
   }
   const campusId = match.params.id
   const selectedCampus = campuses.find(campus => campus.id === campusId)
+  if (!selectedCampus) {
+    return { selectedCampus: {} }
+  }
   const studentsOfCampus = students
     .filter(student => student.campusId === campusId)
     .map(student => ({ ...student, campusName: selectedCampus.name }))
@@ -51,4 +74,13 @@ const mapStateToProps = ({ campuses, students }, { match }) => {
   }
 }
 
-export default connect(mapStateToProps)(SingleCampus)
+const mapDispatchToProps = dispatch => {
+  return {
+    deleteCampusAndUpdate: campusId => dispatch(deleteCampusAndUpdate(campusId))
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SingleCampus)
