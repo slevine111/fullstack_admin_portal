@@ -1,6 +1,6 @@
 import React from 'react'
-import CampusRow from '../CampusRow'
-import StudentRow from '../StudentRow'
+import CampusRow from '../Campus/CampusRow'
+import StudentRow from '../Student/StudentRow'
 
 const TableOfData = ({ data, dataHeaders }) => {
   if (!data[0]) return <div />

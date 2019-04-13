@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import TableOfData from './Shared/TableOfData'
+import TableOfData from '../Shared/TableOfData'
 
 const SingleCampus = ({ selectedCampus, studentsOfCampus }) => {
   const { name, address, imageUrl, description } = selectedCampus

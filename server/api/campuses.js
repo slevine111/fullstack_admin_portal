@@ -8,3 +8,9 @@ router.get('/', (req, res, next) => {
     .then(campuses => res.json(campuses))
     .catch(next)
 })
+
+router.post('/', (req, res, next) => {
+  Campus.create(req.body)
+    .then(campus => res.json(campus))
+    .catch(next)
+})
