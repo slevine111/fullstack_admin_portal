@@ -2,7 +2,10 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { fetchAllCampuses, fetchAllStudents } from '../store'
 import { HashRouter, Route, Link } from 'react-router-dom'
-import TableOfData from './TableOfData'
+import AllCampusesView from './AllCampusesView'
+import AllStudentsView from './AllStudentsView'
+import SingleCampus from './SingleCampus'
+import SingleStudent from './SingleStudent'
 
 class App extends Component {
   componentDidMount() {
@@ -19,14 +22,10 @@ class App extends Component {
           <Route path="/" render={() => <Link to="/students">students</Link>} />
           <Route path="/" render={() => <Link to="/campuses">campuses</Link>} />
 
-          <Route
-            path="/campuses"
-            render={({ location }) => <TableOfData path={location.pathname} />}
-          />
-          <Route
-            path="/students"
-            render={({ location }) => <TableOfData path={location.pathname} />}
-          />
+          <Route exact path="/campuses" component={AllCampusesView} />
+          <Route exact path="/students" component={AllStudentsView} />
+          <Route path="/campuses/:id" component={SingleCampus} />
+          <Route path="/students/:id" component={SingleStudent} />
         </Fragment>
       </HashRouter>
     )

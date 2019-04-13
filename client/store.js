@@ -40,6 +40,7 @@ const campusesReducer = (state = [], action) => {
 const studentsReducer = (state = [], action) => {
   switch (action.type) {
     case GOT_STUDENTS:
+      console.log(state)
       return action.students
     default:
       return state

@@ -1,24 +1,12 @@
 import React from 'react'
-import { connect } from 'react-redux'
-
-const generateRow = (data, columnsToGet) => {
-  return data.map((row, idx) => {
-    return (
-      <tr key={idx}>
-        <th scope="row">{idx + 1}</th>
-        {columnsToGet.map((column, idx) => (
-          <td key={idx}>{row[column]}</td>
-        ))}
-      </tr>
-    )
-  })
-}
+import CampusRow from '../CampusRow'
+import StudentRow from '../StudentRow'
 
 const TableOfData = ({ data, dataHeaders }) => {
-  if (!dataHeaders) return <div />
+  if (!data[0]) return <div />
 
   return (
-    <table className="table table-borderless">
+    <table className="table">
       <thead>
         <tr>
           {dataHeaders.map((header, idx) => (
@@ -30,20 +18,20 @@ const TableOfData = ({ data, dataHeaders }) => {
       </thead>
       <tbody>
         {data[0].campusId
-          ? generateRow(data, [
-              'firstname',
-              'lastname',
-              'email',
-              'gpa',
-              'campusName'
-            ])
-          : generateRow(data, ['name', 'address'])}
+          ? data.map((student, idx) => (
+              <StudentRow key={student.id} student={student} index={idx + 1} />
+            ))
+          : data.map((campus, idx) => (
+              <CampusRow key={campus.id} campus={campus} index={idx + 1} />
+            ))}
       </tbody>
     </table>
   )
 }
 
-const mapStateToProps = (state, ownProps) => {
+export default TableOfData
+
+/*const mapStateToProps = (state, ownProps) => {
   const typeOfData = ownProps.path.slice(1)
   let data = state[typeOfData]
   const dataHeaders = data[0]
@@ -69,4 +57,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps)(TableOfData)
+export default connect(mapStateToProps)(TableOfData)*/
