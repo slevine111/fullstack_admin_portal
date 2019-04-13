@@ -1,15 +1,34 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import TableOfData from '../Shared/TableOfData'
+import CreateCampusForm from './CreateCampusForm'
 
-const AllCampusesView = ({ campuses, dataHeaders, selectedColumns }) => {
-  return (
-    <TableOfData
-      data={campuses}
-      dataHeaders={dataHeaders}
-      selectedColumns={selectedColumns}
-    />
-  )
+class AllCampusesView extends Component {
+  constructor() {
+    super()
+    this.state = { formShowed: false }
+  }
+
+  render() {
+    const { campuses, dataHeaders } = this.props
+    const { formShowed } = this.state
+    return (
+      <div>
+        <button
+          type="button"
+          onClick={() =>
+            this.setState(curState => ({ formShowed: !curState.formShowed }))
+          }
+        >
+          {formShowed ? '-' : '+'}
+        </button>
+
+        {formShowed && <CreateCampusForm />}
+
+        <TableOfData data={campuses} dataHeaders={dataHeaders} />
+      </div>
+    )
+  }
 }
 
 const mapStateToProps = ({ campuses }) => ({

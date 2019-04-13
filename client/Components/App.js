@@ -2,10 +2,10 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { fetchAllCampuses, fetchAllStudents } from '../store'
 import { HashRouter, Route, Link } from 'react-router-dom'
-import AllCampusesView from './AllCampusesView'
-import AllStudentsView from './AllStudentsView'
-import SingleCampus from './SingleCampus'
-import SingleStudent from './SingleStudent'
+import AllCampusesView from './Campus/AllCampusesView'
+import AllStudentsView from './Student/AllStudentsView'
+import SingleCampus from './Campus/SingleCampus'
+import SingleStudent from './Student/SingleStudent'
 
 class App extends Component {
   componentDidMount() {
