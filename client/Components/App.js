@@ -17,17 +17,25 @@ class App extends Component {
 
   render() {
     return (
-      <HashRouter>
-        <Fragment>
-          <Route path="/" render={() => <Link to="/students">students</Link>} />
-          <Route path="/" render={() => <Link to="/campuses">campuses</Link>} />
+      <div className="container">
+        <HashRouter>
+          <Fragment>
+            <Route
+              path="/"
+              render={() => <Link to="/students">students</Link>}
+            />
+            <Route
+              path="/"
+              render={() => <Link to="/campuses">campuses</Link>}
+            />
 
-          <Route exact path="/campuses" component={AllCampusesView} />
-          <Route exact path="/students" component={AllStudentsView} />
-          <Route path="/campuses/:id" component={SingleCampus} />
-          <Route path="/students/:id" component={SingleStudent} />
-        </Fragment>
-      </HashRouter>
+            <Route exact path="/campuses" component={AllCampusesView} />
+            <Route exact path="/students" component={AllStudentsView} />
+            <Route path="/campuses/:id" component={SingleCampus} />
+            <Route path="/students/:id" component={SingleStudent} />
+          </Fragment>
+        </HashRouter>
+      </div>
     )
   }
 }

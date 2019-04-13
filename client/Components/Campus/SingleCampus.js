@@ -39,18 +39,21 @@ class SingleCampus extends Component {
             Delete Campus and Their Students
           </button>
         </div>
-
-        <TableOfData
-          data={studentsOfCampus}
-          dataHeaders={[
-            'Index',
-            'First Name',
-            'Last Name',
-            'Email',
-            'GPA',
-            'Campus'
-          ]}
-        />
+        {studentsOfCampus[0] ? (
+          <TableOfData
+            data={studentsOfCampus}
+            dataHeaders={[
+              'Index',
+              'First Name',
+              'Last Name',
+              'Email',
+              'GPA',
+              'Campus'
+            ]}
+          />
+        ) : (
+          <h5>This campus has no students</h5>
+        )}
       </div>
     )
   }
