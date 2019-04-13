@@ -14,3 +14,9 @@ router.post('/', (req, res, next) => {
     .then(student => res.json(student))
     .catch(next)
 })
+
+router.delete('/:id', (req, res, next) => {
+  Student.destroy({ where: { id: Number(req.params.id) } })
+    .then(() => res.sendStatus(204))
+    .catch(next)
+})

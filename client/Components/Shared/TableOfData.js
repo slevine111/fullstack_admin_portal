@@ -6,7 +6,7 @@ const TableOfData = ({ data, dataHeaders }) => {
   if (!data[0]) return <div />
 
   return (
-    <table className="table">
+    <table className="table table-borderless">
       <thead>
         <tr>
           {dataHeaders.map((header, idx) => (

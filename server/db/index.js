@@ -3,7 +3,10 @@ const Campus = require('./models/Campus')
 const connection = require('./connection')
 
 const setAssociations = () => {
-  return Promise.all([Student.belongsTo(Campus), Campus.hasMany(Student)])
+  return Promise.all([
+    Student.belongsTo(Campus, { onDelete: 'CASCADE' }),
+    Campus.hasMany(Student)
+  ])
 }
 
 function dbInit(force = false) {
