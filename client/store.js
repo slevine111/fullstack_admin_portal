@@ -9,6 +9,8 @@ const CREATED_CAMPUS = Symbol('CREATED_CAMPUS')
 const CREATED_STUDENT = Symbol('CREATED_STUDENT')
 const DELETED_CAMPUS = Symbol('DELETED_CAMPUS')
 const DELETED_STUDENT = Symbol('DELETED_STUDENT')
+const UPDATED_CAMPUS = Symbol('UPDATED_CAMPUS')
+const UPDATED_STUDENT = Symbol('UPDATED_STUDENT')
 
 //action creators
 const gotCampuses = campuses => ({ type: GOT_CAMPUSES, campuses })
@@ -22,6 +24,16 @@ const deletedCampus = deletedCampusId => ({
 const deletedStudent = deletedStudentId => ({
   type: DELETED_STUDENT,
   deletedStudentId
+})
+const updatedCampus = (id, changedCampus) => ({
+  type: UPDATED_CAMPUS,
+  id,
+  changedCampus
+})
+const updatedStudent = (id, changedStudent) => ({
+  type: UPDATED_STUDENT,
+  id,
+  changedStudent
 })
 
 //thunks
@@ -67,6 +79,15 @@ export const deleteStudentAndUpdate = studentId => {
   }
 }
 
+export const updateItemAndChangeStore = (model, id, itemData) => {
+  const actionToDispatch = model === 'campuses' ? updatedCampus : updatedStudent
+  return dispatch => {
+    return axios
+      .put(`/api/${model}/${id}`, itemData)
+      .then(({ data }) => dispatch(actionToDispatch(id, data)))
+  }
+}
+
 //reudcers
 const campusesReducer = (state = [], action) => {
   switch (action.type) {
@@ -76,6 +97,10 @@ const campusesReducer = (state = [], action) => {
       return [...state, action.newCampus]
     case DELETED_CAMPUS:
       return state.filter(campus => campus.id !== action.deletedCampusId)
+    case UPDATED_CAMPUS:
+      return state.map(campus =>
+        campus.id === action.id ? action.changedCampus : campus
+      )
     default:
       return state
   }
@@ -89,6 +114,10 @@ const studentsReducer = (state = [], action) => {
       return [...state, action.newStudent]
     case DELETED_STUDENT:
       return state.filter(student => student.id !== action.deletedStudentId)
+    case UPDATED_STUDENT:
+      return state.map(student =>
+        student.id === action.id ? action.changedStudent : student
+      )
     default:
       return state
   }

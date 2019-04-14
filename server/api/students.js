@@ -20,3 +20,10 @@ router.delete('/:id', (req, res, next) => {
     .then(() => res.sendStatus(204))
     .catch(next)
 })
+
+router.put('/:id', (req, res, next) => {
+  Student.findByPk(req.params.id)
+    .then(student => student.update(req.body))
+    .then(newStudent => res.json(newStudent))
+    .catch(next)
+})
