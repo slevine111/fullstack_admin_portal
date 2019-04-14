@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { deleteStudentAndUpdate } from '../../store'
+import DataAttribute from '../Shared/DataAttribute'
 
 class SingleStudent extends Component {
   constructor() {
@@ -11,8 +12,6 @@ class SingleStudent extends Component {
       firstnameIsInput: false
     }
     this.handleClick = this.handleClick.bind(this)
-    this.convertFieldToForm = this.convertFieldToForm.bind(this)
-    this.handleChange = this.handleChange.bind(this)
   }
 
   handleClick(id) {
@@ -21,18 +20,9 @@ class SingleStudent extends Component {
     })
   }
 
-  handleChange({ target }) {
-    this.setState({ [target.name]: target.value })
-  }
-
-  convertFieldToForm(field, value) {
-    this.setState({ [field]: value, [`${field}IsInput`]: true })
-  }
-
   render() {
     const { selectedStudent } = this.props
-    const { handleClick, convertFieldToForm, handleChange } = this
-    const { firstnameIsInput } = this.state
+    const { handleClick } = this
     const {
       id,
       firstname,
@@ -51,45 +41,42 @@ class SingleStudent extends Component {
     return (
       <div className="container">
         <img src={imageUrl} />
-        <div>
-          <strong> First Name: </strong>
-          {firstnameIsInput ? (
-            <Fragment>
-              <input
-                type="text"
-                value={this.state.firstname}
-                name="firstname"
-                onChange={handleChange}
-              />
-              <i className="fas fa-check fa-lg" />
-              <i
-                className="fas fa-times fa-lg"
-                onClick={() => this.setState({ firstnameIsInput: false })}
-              />
-            </Fragment>
-          ) : (
-            <Fragment>
-              {firstname}
-              <i
-                className="far fa-edit fa-lg"
-                onClick={() => convertFieldToForm('firstname', firstname)}
-              />
-            </Fragment>
-          )}
-        </div>
-        <div>
-          <strong> Last Name: </strong> {lastname}
-        </div>
-        <div>
-          <strong> Email: </strong> {email}
-        </div>
-        <div>
-          <strong> GPA: </strong> {gpa}
-        </div>
-        <div>
-          <strong> Campus Name: </strong>{' '}
-          <Link to={`/campuses/${campusId}`}>{campusName}</Link>
-        </div>
+        <DataAttribute
+          label="First Name"
+          databaseColumnName="firstname"
+          value={firstname}
+          id={id}
+          data={selectedStudent}
+        />
+        <DataAttribute
+          label="Last Name"
+          databaseColumnName="lastname"
+          value={lastname}
+          id={id}
+          data={selectedStudent}
+        />
+        <DataAttribute
+          label="Email"
+          databaseColumnName="email"
+          value={email}
+          id={id}
+          data={selectedStudent}
+        />
+        <DataAttribute
+          label="GPA"
+          databaseColumnName="gpa"
+          value={gpa}
+          id={id}
+          data={selectedStudent}
+        />
+        <DataAttribute
+          label="Campus Name"
+          databaseColumnName="campusId"
+          value={campusId}
+          campusName={campusName}
+          id={id}
+          data={selectedStudent}
+        />
         <div>
           <button type="button" onClick={() => handleClick(id)}>
             Delete Student
