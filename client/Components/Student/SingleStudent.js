@@ -1,16 +1,11 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { deleteStudentAndUpdate } from '../../store'
 import DataAttribute from '../Shared/DataAttribute'
 
 class SingleStudent extends Component {
   constructor() {
     super()
-    this.state = {
-      firstname: '',
-      firstnameIsInput: false
-    }
     this.handleClick = this.handleClick.bind(this)
   }
 
@@ -47,6 +42,7 @@ class SingleStudent extends Component {
           value={firstname}
           id={id}
           data={selectedStudent}
+          model="students"
         />
         <DataAttribute
           label="Last Name"
@@ -54,6 +50,7 @@ class SingleStudent extends Component {
           value={lastname}
           id={id}
           data={selectedStudent}
+          model="students"
         />
         <DataAttribute
           label="Email"
@@ -61,6 +58,7 @@ class SingleStudent extends Component {
           value={email}
           id={id}
           data={selectedStudent}
+          model="students"
         />
         <DataAttribute
           label="GPA"
@@ -68,6 +66,7 @@ class SingleStudent extends Component {
           value={gpa}
           id={id}
           data={selectedStudent}
+          model="students"
         />
         <DataAttribute
           label="Campus Name"
@@ -76,6 +75,7 @@ class SingleStudent extends Component {
           campusName={campusName}
           id={id}
           data={selectedStudent}
+          model="students"
         />
         <div>
           <button type="button" onClick={() => handleClick(id)}>

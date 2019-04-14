@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { createNewItemAndUpdate } from '../../store'
-import statesAndAbbreviations from '../../../bin/StateAndAbbreviations'
+import CompleteAddressForm from './CompleteAddressForm'
 
 const createField = ({ fieldLabel, fieldName, value, handleChange }) => {
   return (
@@ -68,7 +68,7 @@ class CreateCampusForm extends Component {
   }
 
   render() {
-    const { name, address, imageUrl, description, city, zip } = this.state
+    const { name, imageUrl, description } = this.state
     let arrayOfFields = [
       {
         fieldLabel: 'Campus Name',
@@ -80,49 +80,16 @@ class CreateCampusForm extends Component {
         fieldLabel: 'Description',
         fieldName: 'description',
         value: description
-      },
-      { fieldLabel: 'Address', fieldName: 'address', value: address }
+      }
     ].map(field => ({ ...field, handleChange: this.handleChange }))
 
     return (
       <form onSubmit={this.handleSubmit}>
         {arrayOfFields.map(field => createField(field))}
-        <div className="form-row">
-          <div className="form-group col-md-6">
-            {createField({
-              fieldLabel: 'City',
-              fieldName: 'city',
-              value: city,
-              handleChange: this.handleChange
-            })}
-          </div>
-          <div className="form-group col-md-4">
-            <label htmlFor="state">State</label>
-            <select
-              className="form-control"
-              id="state"
-              name="state"
-              onChange={this.handleChange}
-            >
-              {statesAndAbbreviations.map((state, idx) => (
-                <option key={idx} value={state.abbreviation}>
-                  {state.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="form-group col-md-2">
-            {createField({
-              fieldLabel: 'Zip Code',
-              fieldName: 'zip',
-              value: zip,
-              handleChange: this.handleChange
-            })}
-          </div>
-          <button type="submit" className="btn btn-primary">
-            Submit
-          </button>
-        </div>
+        <CompleteAddressForm {...this.state} handleChange={this.handleChange} />
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
       </form>
     )
   }

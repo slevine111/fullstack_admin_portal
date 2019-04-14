@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { updateItemAndChangeStore } from '../../store'
 import { Link } from 'react-router-dom'
+import CompleteAddressForm from '../Campus/CompleteAddressForm'
 
 class DataAttribute extends Component {
   constructor() {
@@ -16,7 +17,11 @@ class DataAttribute extends Component {
   }
 
   handleChange({ target }) {
-    this.setState({ field: target.value })
+    if (this.props.address) {
+      this.setState({ [target.name]: target.value })
+    } else {
+      this.setState({ field: target.value })
+    }
   }
 
   handleSubmit() {
@@ -24,24 +29,70 @@ class DataAttribute extends Component {
       updateItemAndChangeStore,
       id,
       data,
-      databaseColumnName
+      databaseColumnName,
+      model
     } = this.props
-    return updateItemAndChangeStore(id, {
+    const { address, city, state, zip } = this.state
+    let updatedField = this.props.address
+      ? `${address}, ${city}, ${state} ${zip}`
+      : this.state.field
+    const updatedItem = {
       ...data,
-      [databaseColumnName]: this.state.field
-    }).then(() => {
+      [databaseColumnName]: updatedField
+    }
+
+    return updateItemAndChangeStore(model, id, updatedItem).then(() => {
       this.setState({ fieldIsInput: false })
     })
   }
 
   convertFieldToForm(value) {
-    this.setState({ field: value, fieldIsInput: true })
+    if (this.props.address) {
+      this.setState({
+        address: this.props.address,
+        city: this.props.city,
+        state: this.props.state,
+        zip: this.props.zip,
+        fieldIsInput: true
+      })
+    } else {
+      this.setState({ field: value, fieldIsInput: true })
+    }
   }
 
   render() {
     const { convertFieldToForm, handleChange, handleSubmit } = this
-    const { label, value, campusName, campuses } = this.props
+    const {
+      label,
+      value,
+      campusName,
+      campuses,
+      inputType,
+      address,
+      city,
+      state,
+      zip
+    } = this.props
     const { field, fieldIsInput } = this.state
+
+    if (label === 'Address' && fieldIsInput) {
+      return (
+        <Fragment>
+          <CompleteAddressForm
+            address={address}
+            city={city}
+            state={state}
+            zip={zip}
+            handleChange={handleChange}
+          />
+          <i className="fas fa-check fa-lg" onClick={handleSubmit} />
+          <i
+            className="fas fa-times fa-lg"
+            onClick={() => this.setState({ fieldIsInput: false })}
+          />
+        </Fragment>
+      )
+    }
 
     if (label === 'Campus Name') {
       return (
@@ -53,7 +104,7 @@ class DataAttribute extends Component {
                 className="form-control"
                 id="campuses"
                 name="campusId"
-                onChange={this.handleChange}
+                onChange={handleChange}
                 defaultValue={value}
               >
                 {campuses.map(campus => {
@@ -92,16 +143,30 @@ class DataAttribute extends Component {
             <label htmlFor="field">
               <strong>{`${label}: `}</strong>
             </label>
-            <input
-              type="text"
-              value={field}
-              id="field"
-              name="field"
-              onChange={handleChange}
-              onKeyPress={event => {
-                if (event.which === 13) handleSubmit()
-              }}
-            />
+            {inputType === 'textarea' ? (
+              <textarea
+                rows={5}
+                cols={50}
+                value={field}
+                id="field"
+                name="field"
+                onChange={handleChange}
+                onKeyPress={event => {
+                  if (event.which === 13) handleSubmit()
+                }}
+              />
+            ) : (
+              <input
+                type="text"
+                value={field}
+                id="field"
+                name="field"
+                onChange={handleChange}
+                onKeyPress={event => {
+                  if (event.which === 13) handleSubmit()
+                }}
+              />
+            )}
             <i className="fas fa-check fa-lg" onClick={handleSubmit} />
             <i
               className="fas fa-times fa-lg"
@@ -127,8 +192,8 @@ const mapStateToProps = state => state
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateItemAndChangeStore: (studentId, changedStudent) =>
-      dispatch(updateItemAndChangeStore('students', studentId, changedStudent))
+    updateItemAndChangeStore: (model, studentId, changedStudent) =>
+      dispatch(updateItemAndChangeStore(model, studentId, changedStudent))
   }
 }
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import TableOfData from '../Shared/TableOfData'
 import { deleteCampusAndUpdate } from '../../store'
+import DataAttribute from '../Shared/DataAttribute'
 
 class SingleCampus extends Component {
   constructor() {
@@ -17,23 +18,50 @@ class SingleCampus extends Component {
 
   render() {
     const { selectedCampus, studentsOfCampus } = this.props
-    const { id, name, address, imageUrl, description } = selectedCampus
     if (!selectedCampus.id) {
       return <div />
     }
 
+    const addressSeparated = selectedCampus.address
+      .split(',')
+      .map(element => element.trim())
+    const [streetAddress, city, stateAndZip] = addressSeparated
+    const [state, zip] = stateAndZip.split(' ')
+    const { id, name, address, imageUrl, description } = selectedCampus
+
     return (
       <div className="container">
         <img src={imageUrl} />
-        <div>
-          <strong> Name: </strong> {name}
-        </div>
-        <div>
-          <strong> Address: </strong> {address}
-        </div>
-        <div>
-          <strong> Description: </strong> {description}
-        </div>
+        <DataAttribute
+          label="Name"
+          databaseColumnName="name"
+          value={name}
+          id={id}
+          data={selectedCampus}
+          model="campuses"
+        />
+        <DataAttribute
+          label="Address"
+          databaseColumnName="address"
+          value={address}
+          id={id}
+          address={streetAddress}
+          city={city}
+          state={state}
+          zip={zip}
+          data={selectedCampus}
+          model="campuses"
+        />
+
+        <DataAttribute
+          label="Description"
+          databaseColumnName="description"
+          value={description}
+          id={id}
+          data={selectedCampus}
+          model="campuses"
+          inputType="textarea"
+        />
         <div>
           <button type="button" onClick={() => this.handleClick(id)}>
             Delete Campus and Their Students
