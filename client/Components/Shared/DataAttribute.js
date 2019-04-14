@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { updateItemAndChangeStore } from '../../store'
 import { Link } from 'react-router-dom'
 import CompleteAddressForm from '../Campus/CompleteAddressForm'
+import CampusDropdown from './CampusDropdown'
 
 class DataAttribute extends Component {
   constructor() {
@@ -14,6 +15,11 @@ class DataAttribute extends Component {
     this.convertFieldToForm = this.convertFieldToForm.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleKeyPress = this.handleKeyPress.bind(this)
+  }
+
+  handleKeyPress({ which }) {
+    if (which === 13) this.handleSubmit()
   }
 
   handleChange({ target }) {
@@ -61,12 +67,16 @@ class DataAttribute extends Component {
   }
 
   render() {
-    const { convertFieldToForm, handleChange, handleSubmit } = this
+    const {
+      convertFieldToForm,
+      handleChange,
+      handleSubmit,
+      handleKeyPress
+    } = this
     const {
       label,
       value,
       campusName,
-      campuses,
       inputType,
       address,
       city,
@@ -99,23 +109,10 @@ class DataAttribute extends Component {
         <div>
           {fieldIsInput ? (
             <Fragment>
-              <label htmlFor="campuses">Campuses</label>
-              <select
-                className="form-control"
-                id="campuses"
-                name="campusId"
-                onChange={handleChange}
+              <CampusDropdown
+                handleChange={handleChange}
                 defaultValue={value}
-              >
-                {campuses.map(campus => {
-                  const { id, name } = campus
-                  return (
-                    <option key={id} value={id}>
-                      {name}
-                    </option>
-                  )
-                })}
-              </select>
+              />
               <i className="fas fa-check fa-lg" onClick={handleSubmit} />
               <i
                 className="fas fa-times fa-lg"
@@ -151,9 +148,7 @@ class DataAttribute extends Component {
                 id="field"
                 name="field"
                 onChange={handleChange}
-                onKeyPress={event => {
-                  if (event.which === 13) handleSubmit()
-                }}
+                onKeyPress={handleKeyPress}
               />
             ) : (
               <input
@@ -162,9 +157,7 @@ class DataAttribute extends Component {
                 id="field"
                 name="field"
                 onChange={handleChange}
-                onKeyPress={event => {
-                  if (event.which === 13) handleSubmit()
-                }}
+                onKeyPress={handleKeyPress}
               />
             )}
             <i className="fas fa-check fa-lg" onClick={handleSubmit} />

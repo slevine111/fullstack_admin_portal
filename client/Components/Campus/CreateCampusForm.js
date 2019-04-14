@@ -2,22 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { createNewItemAndUpdate } from '../../store'
 import CompleteAddressForm from './CompleteAddressForm'
-
-const createField = ({ fieldLabel, fieldName, value, handleChange }) => {
-  return (
-    <div key={fieldName} className="form-group">
-      <label htmlFor={fieldName}>{fieldLabel}</label>
-      <input
-        type="text"
-        className="form-control"
-        id={fieldName}
-        name={fieldName}
-        value={value}
-        onChange={handleChange}
-      />
-    </div>
-  )
-}
+import TextFieldInput from '../Shared/TextFieldInput'
 
 const initialState = {
   name: '',
@@ -85,7 +70,9 @@ class CreateCampusForm extends Component {
 
     return (
       <form onSubmit={this.handleSubmit}>
-        {arrayOfFields.map(field => createField(field))}
+        {arrayOfFields.map(fieldInput => (
+          <TextFieldInput key={fieldInput.fieldLabel} {...fieldInput} />
+        ))}
         <CompleteAddressForm {...this.state} handleChange={this.handleChange} />
         <button type="submit" className="btn btn-primary">
           Submit

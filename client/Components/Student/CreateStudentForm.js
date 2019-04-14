@@ -1,22 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { createNewItemAndUpdate } from '../../store'
-
-const createField = ({ fieldLabel, fieldName, value, handleChange }) => {
-  return (
-    <div key={fieldName} className="form-group">
-      <label htmlFor={fieldName}>{fieldLabel}</label>
-      <input
-        type="text"
-        className="form-control"
-        id={fieldName}
-        name={fieldName}
-        value={value}
-        onChange={handleChange}
-      />
-    </div>
-  )
-}
+import CampusDropdown from '../Shared/CampusDropdown'
+import TextFieldInput from '../Shared/TextFieldInput'
 
 const initialState = {
   firstname: '',
@@ -73,25 +59,10 @@ class CreateCampusForm extends Component {
     ].map(field => ({ ...field, handleChange: this.handleChange }))
     return (
       <form onSubmit={this.handleSubmit}>
-        {arrayOfFields.map(field => createField(field))}
-        <div className="form-group">
-          <label htmlFor="campuses">Campuses</label>
-          <select
-            className="form-control"
-            id="campuses"
-            name="campusId"
-            onChange={this.handleChange}
-          >
-            {this.props.campuses.map(campus => {
-              const { id, name } = campus
-              return (
-                <option key={id} value={id}>
-                  {name}
-                </option>
-              )
-            })}
-          </select>
-        </div>
+        {arrayOfFields.map(fieldInput => (
+          <TextFieldInput key={fieldInput.fieldLabel} {...fieldInput} />
+        ))}
+        <CampusDropdown handleChange={this.handleChange} />
         <button type="submit" className="btn btn-primary">
           Submit
         </button>

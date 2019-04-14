@@ -1,39 +1,29 @@
 import React from 'react'
+//import { connect } from 'react-redux'
 import statesAndAbbreviations from '../../../bin/StateAndAbbreviations'
-
-const createField = ({ fieldLabel, fieldName, value, handleChange }) => {
-  return (
-    <div key={fieldName} className="form-group">
-      <label htmlFor={fieldName}>{fieldLabel}</label>
-      <input
-        type="text"
-        className="form-control"
-        id={fieldName}
-        name={fieldName}
-        value={value}
-        onChange={handleChange}
-      />
-    </div>
-  )
-}
+import TextFieldInput from '../Shared/TextFieldInput'
 
 const CompleteAddressForm = ({ address, city, state, zip, handleChange }) => {
+  const arrayOfTextInputs = [
+    { fieldLabel: 'Address', fieldName: 'address', value: address },
+    {
+      fieldLabel: 'City',
+      fieldName: 'city',
+      value: city
+    },
+    {
+      fieldLabel: 'Zip Code',
+      fieldName: 'zip',
+      value: zip
+    }
+  ].map(input => ({ ...input, handleChange }))
+
   return (
     <div>
-      {createField({
-        fieldLabel: 'Address',
-        fieldName: 'address',
-        value: address,
-        handleChange
-      })}
+      <TextFieldInput {...arrayOfTextInputs[0]} />
       <div className="form-row">
         <div className="form-group col-md-6">
-          {createField({
-            fieldLabel: 'City',
-            fieldName: 'city',
-            value: city,
-            handleChange
-          })}
+          <TextFieldInput {...arrayOfTextInputs[1]} />
         </div>
         <div className="form-group col-md-4">
           <label htmlFor="state">State</label>
@@ -57,16 +47,17 @@ const CompleteAddressForm = ({ address, city, state, zip, handleChange }) => {
           </select>
         </div>
         <div className="form-group col-md-2">
-          {createField({
-            fieldLabel: 'Zip Code',
-            fieldName: 'zip',
-            value: zip,
-            handleChange
-          })}
+          <TextFieldInput {...arrayOfTextInputs[2]} />
         </div>
       </div>
     </div>
   )
 }
 
+/*const mapStateToProps = ({ campuses }, { id }) => {
+  if (id) return campuses.find(campus => campus.id === id)
+  return {}
+}*/
+
+//export default connect(mapStateToProps)(CompleteAddressForm)
 export default CompleteAddressForm
