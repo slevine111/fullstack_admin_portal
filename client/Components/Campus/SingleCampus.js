@@ -2,7 +2,31 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import TableOfData from '../Shared/TableOfData'
 import { deleteCampusAndUpdate } from '../../store'
-import DataAttribute from '../Shared/DataAttribute'
+import Atest from '../Shared/Atest'
+import TextFieldInput from '../Shared/TextFieldInput'
+import CompleteAddressForm from './CompleteAddressForm'
+import { StaticComponentBlock, campusHeader } from '../Shared/UtilityComponents'
+
+const TextAreaInput = ({ label, value, handleChange, handleKeyPress }) => {
+  return (
+    <div className="form-group campus-description">
+      <label htmlFor="field">
+        <strong>{`${label}: `}</strong>
+      </label>
+      <div>
+        <textarea
+          rows={5}
+          cols={70}
+          value={value}
+          id="field"
+          name="field"
+          onChange={handleChange}
+          onKeyPress={handleKeyPress}
+        />
+      </div>
+    </div>
+  )
+}
 
 class SingleCampus extends Component {
   constructor() {
@@ -17,7 +41,7 @@ class SingleCampus extends Component {
   }
 
   render() {
-    const { selectedCampus, studentsOfCampus } = this.props
+    const { selectedCampus, studentsOfCampus, history } = this.props
     if (!selectedCampus.id) {
       return <div />
     }
@@ -27,60 +51,60 @@ class SingleCampus extends Component {
       .map(element => element.trim())
     const [streetAddress, city, stateAndZip] = addressSeparated
     const [state, zip] = stateAndZip.split(' ')
-    const { id, name, address, imageUrl, description } = selectedCampus
+    const { id, imageUrl } = selectedCampus
+
+    const H4Field = Atest(TextFieldInput, campusHeader)
+    const TextAreaField = Atest(TextAreaInput, StaticComponentBlock)
+    const AddressForm = Atest(CompleteAddressForm, StaticComponentBlock)
 
     return (
-      <div className="container">
-        <img src={imageUrl} />
-        <DataAttribute
+      <div>
+        <H4Field
           label="Name"
           databaseColumnName="name"
-          value={name}
           id={id}
-          data={selectedCampus}
           model="campuses"
         />
-        <DataAttribute
+        <img src={imageUrl} className="single-campus-image" />
+
+        <AddressForm
           label="Address"
           databaseColumnName="address"
-          value={address}
           id={id}
           address={streetAddress}
           city={city}
           state={state}
           zip={zip}
-          data={selectedCampus}
           model="campuses"
         />
-
-        <DataAttribute
+        <TextAreaField
           label="Description"
           databaseColumnName="description"
-          value={description}
           id={id}
-          data={selectedCampus}
           model="campuses"
-          inputType="textarea"
+          className="campus-description"
         />
+
         <div>
-          <button type="button" onClick={() => this.handleClick(id)}>
-            Delete Campus and Their Students
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={() => this.handleClick(id)}
+          >
+            Remove Campus and Students
           </button>
         </div>
         {studentsOfCampus[0] ? (
           <TableOfData
             data={studentsOfCampus}
-            dataHeaders={[
-              'Index',
-              'First Name',
-              'Last Name',
-              'Email',
-              'GPA',
-              'Campus'
-            ]}
+            history={history}
+            campus={selectedCampus.name}
           />
         ) : (
-          <h5>This campus has no students</h5>
+          <h6 className="alert alert-warning">
+            This campus has no students :(. Find some students before it shuts
+            down
+          </h6>
         )}
       </div>
     )

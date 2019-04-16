@@ -1,8 +1,39 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { deleteStudentAndUpdate } from '../../store'
 import DataAttribute from '../Shared/DataAttribute'
+import TextFieldInput from '../Shared/TextFieldInput'
+import CampusDropdown from '../Shared/CampusDropdown'
+import {
+  StaticComponentInLine,
+  campusHeader
+} from '../Shared/UtilityComponents'
+import Atest from '../Shared/Atest'
 
+const HeaderField = Atest(TextFieldInput, campusHeader)
+const TextField = Atest(TextFieldInput, StaticComponentInLine)
+const CampusField = Atest(CampusDropdown, StaticComponentInLine)
+const personNameFields = () => {
+  return (
+    <div>
+      {' '}
+      <HeaderField
+        label="First Name"
+        databaseColumnName="firstname"
+        id={id}
+        model="students"
+        addedClass="inline"
+      />
+      <HeaderField
+        label="Last Name"
+        databaseColumnName="lastname"
+        id={id}
+        model="students"
+        addedClass="inline"
+      />
+    </div>
+  )
+}
 class SingleStudent extends Component {
   constructor() {
     super()
@@ -16,73 +47,67 @@ class SingleStudent extends Component {
   }
 
   render() {
-    const { selectedStudent } = this.props
+    const { selectedStudent, history } = this.props
     const { handleClick } = this
-    const {
-      id,
-      firstname,
-      lastname,
-      email,
-      gpa,
-      imageUrl,
-      campusName,
-      campusId
-    } = selectedStudent
+    const { id, imageUrl, campusName } = selectedStudent
 
     if (!selectedStudent.id) {
       return <div />
     }
 
     return (
-      <div className="container">
-        <img src={imageUrl} />
-        <DataAttribute
+      <Fragment>
+        <HeaderField
           label="First Name"
           databaseColumnName="firstname"
-          value={firstname}
           id={id}
-          data={selectedStudent}
           model="students"
+          addedClass="inline"
         />
-        <DataAttribute
+        <HeaderField
           label="Last Name"
           databaseColumnName="lastname"
-          value={lastname}
           id={id}
-          data={selectedStudent}
           model="students"
+          addedClass="inline"
         />
-        <DataAttribute
-          label="Email"
-          databaseColumnName="email"
-          value={email}
-          id={id}
-          data={selectedStudent}
-          model="students"
-        />
-        <DataAttribute
-          label="GPA"
-          databaseColumnName="gpa"
-          value={gpa}
-          id={id}
-          data={selectedStudent}
-          model="students"
-        />
-        <DataAttribute
-          label="Campus Name"
-          databaseColumnName="campusId"
-          value={campusId}
-          campusName={campusName}
-          id={id}
-          data={selectedStudent}
-          model="students"
-        />
+        <div className="row student-image-and-info">
+          <div className="col-sm-4">
+            <img src={imageUrl} className="single-student-image" />
+          </div>
+          <div className="col-sm-8 align-self-center">
+            <TextField
+              label="Email"
+              databaseColumnName="email"
+              id={id}
+              model="students"
+            />
+            <TextField
+              label="GPA"
+              databaseColumnName="gpa"
+              id={id}
+              model="students"
+            />
+            <CampusField
+              label="Campus Name"
+              databaseColumnName="campusId"
+              campusName={campusName}
+              history={history}
+              id={id}
+              model="students"
+            />
+          </div>
+        </div>
         <div>
-          <button type="button" onClick={() => handleClick(id)}>
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={() => handleClick(id)}
+          >
             Delete Student
           </button>
         </div>
-      </div>
+      </Fragment>
     )
   }
 }

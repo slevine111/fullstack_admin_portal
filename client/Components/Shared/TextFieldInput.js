@@ -1,36 +1,35 @@
 import React from 'react'
 
 const TextFieldInput = ({
-  id,
   fieldLabel,
   fieldName,
   value,
   handleChange,
   handleKeyPress
 }) => {
+  console.log(value)
   return (
-    <div className={`${id ? '' : 'form-group'}`}>
-      <label htmlFor={fieldName}>{fieldLabel}</label>
+    <div
+      className={`${
+        handleKeyPress && fieldLabel !== 'Address' ? 'inline' : 'form-group'
+      }`}
+    >
+      <label htmlFor={fieldName}>
+        {handleKeyPress ? <strong>{fieldLabel}</strong> : fieldLabel}
+      </label>
       <input
         type="text"
-        className={`${id ? '' : 'form-control'}`}
+        className={`${
+          handleKeyPress && fieldLabel !== 'Address' ? '' : 'form-control'
+        } `}
         id={fieldName}
         name={fieldName}
         value={value}
         onChange={handleChange}
-        onKeyPress={id ? handleKeyPress : () => {}}
+        onKeyPress={handleKeyPress ? handleKeyPress : () => {}}
       />
     </div>
   )
 }
-
-/*;<input
-  type="text"
-  value={field}
-  id="field"
-  name="field"
-  onChange={handleChange}
-  onKeyPress={handleKeyPress}
-/>*/
 
 export default TextFieldInput

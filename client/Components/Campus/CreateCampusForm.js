@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { createNewItemAndUpdate } from '../../store'
 import CompleteAddressForm from './CompleteAddressForm'
@@ -11,7 +11,8 @@ const initialState = {
   state: 'AL',
   zip: '',
   imageUrl: '',
-  description: ''
+  description: '',
+  formShowed: false
 }
 
 class CreateCampusForm extends Component {
@@ -53,7 +54,7 @@ class CreateCampusForm extends Component {
   }
 
   render() {
-    const { name, imageUrl, description } = this.state
+    const { name, imageUrl, description, formShowed } = this.state
     let arrayOfFields = [
       {
         fieldLabel: 'Campus Name',
@@ -69,15 +70,31 @@ class CreateCampusForm extends Component {
     ].map(field => ({ ...field, handleChange: this.handleChange }))
 
     return (
-      <form onSubmit={this.handleSubmit}>
-        {arrayOfFields.map(fieldInput => (
-          <TextFieldInput key={fieldInput.fieldLabel} {...fieldInput} />
-        ))}
-        <CompleteAddressForm {...this.state} handleChange={this.handleChange} />
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
-      </form>
+      <Fragment>
+        <i
+          className={`fa-2x fa${formShowed ? 's' : ''} fa-${
+            formShowed ? 'minus' : 'plus'
+          }-square`}
+          onClick={() =>
+            this.setState(curState => ({ formShowed: !curState.formShowed }))
+          }
+        />
+
+        {formShowed && (
+          <form onSubmit={this.handleSubmit}>
+            {arrayOfFields.map(fieldInput => (
+              <TextFieldInput key={fieldInput.fieldLabel} {...fieldInput} />
+            ))}
+            <CompleteAddressForm
+              {...this.state}
+              handleChange={this.handleChange}
+            />
+            <button type="submit" className="btn btn-primary">
+              Submit
+            </button>
+          </form>
+        )}
+      </Fragment>
     )
   }
 }

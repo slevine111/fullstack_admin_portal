@@ -6,6 +6,7 @@ import AllCampusesView from './Campus/AllCampusesView'
 import AllStudentsView from './Student/AllStudentsView'
 import SingleCampus from './Campus/SingleCampus'
 import SingleStudent from './Student/SingleStudent'
+import Navbar from './Navbar'
 
 class App extends Component {
   componentDidMount() {
@@ -20,15 +21,8 @@ class App extends Component {
       <div className="container">
         <HashRouter>
           <Fragment>
-            <Route
-              path="/"
-              render={() => <Link to="/students">students</Link>}
-            />
-            <Route
-              path="/"
-              render={() => <Link to="/campuses">campuses</Link>}
-            />
-
+            <Route component={Navbar} />
+            <Route exact path="/" render={() => <div>Portal</div>} />
             <Route exact path="/campuses" component={AllCampusesView} />
             <Route exact path="/students" component={AllStudentsView} />
             <Route path="/campuses/:id" component={SingleCampus} />

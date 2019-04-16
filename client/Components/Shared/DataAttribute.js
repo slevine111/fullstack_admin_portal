@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { updateItemAndChangeStore } from '../../store'
-import { Link } from 'react-router-dom'
 import CompleteAddressForm from '../Campus/CompleteAddressForm'
 import CampusDropdown from './CampusDropdown'
+import TextFieldInput from './TextFieldInput'
 
 class DataAttribute extends Component {
   constructor() {
@@ -73,21 +73,13 @@ class DataAttribute extends Component {
       handleSubmit,
       handleKeyPress
     } = this
-    const {
-      label,
-      value,
-      campusName,
-      inputType,
-      address,
-      city,
-      state,
-      zip
-    } = this.props
-    const { field, fieldIsInput } = this.state
+    const { label, value, campusName, inputType, history } = this.props
+    const { field, fieldIsInput, address, city, state, zip } = this.state
 
-    if (label === 'Address' && fieldIsInput) {
-      return (
-        <Fragment>
+    const labelComponentMap = [
+      {
+        label: 'Address',
+        component: (
           <CompleteAddressForm
             address={address}
             city={city}
@@ -95,6 +87,56 @@ class DataAttribute extends Component {
             zip={zip}
             handleChange={handleChange}
           />
+        )
+      },
+      {
+        label: 'Campus Name',
+        component: (
+          <CampusDropdown handleChange={handleChange} currentCampusId={value} />
+        )
+      },
+      {
+        label: 'Description',
+        component: (
+          <div className="form-group">
+            <label htmlFor="field">
+              <strong>{`${label}: `}</strong>
+            </label>
+            <textarea
+              rows={5}
+              cols={50}
+              value={field}
+              id="field"
+              name="field"
+              onChange={handleChange}
+              onKeyPress={handleKeyPress}
+            />
+          </div>
+        )
+      },
+      {
+        label: 'Other',
+        component: (
+          <TextFieldInput
+            handleChange={handleChange}
+            handleKeyPress={handleKeyPress}
+            value={field}
+            fieldName="field"
+            fieldLabel={label}
+          />
+        )
+      }
+    ]
+
+    if (fieldIsInput) {
+      return (
+        <Fragment>
+          {
+            labelComponentMap.find(
+              element =>
+                element.label === (inputType === 'text' ? 'Other' : label)
+            ).component
+          }
           <i className="fas fa-check fa-lg" onClick={handleSubmit} />
           <i
             className="fas fa-times fa-lg"
@@ -104,84 +146,41 @@ class DataAttribute extends Component {
       )
     }
 
-    if (label === 'Campus Name') {
-      return (
-        <div>
-          {fieldIsInput ? (
+    return (
+      <div className="row">
+        <div className="col-sm-4">
+          {' '}
+          <strong>{label}</strong>
+        </div>
+        <div className="col-sm-4">
+          {label === 'Campus Name' ? (
             <Fragment>
-              <CampusDropdown
-                handleChange={handleChange}
-                defaultValue={value}
-              />
-              <i className="fas fa-check fa-lg" onClick={handleSubmit} />
+              {campusName}
               <i
-                className="fas fa-times fa-lg"
-                onClick={() => this.setState({ fieldIsInput: false })}
+                className="fas fa-external-link-alt"
+                onClick={() => history.push(`/campuses/${value}`)}
               />
             </Fragment>
           ) : (
-            <Fragment>
-              <strong> Campus Name: </strong>{' '}
-              <Link to={`/campuses/${value}`}>{campusName}</Link>
-              <i
-                className="far fa-edit fa-lg"
-                onClick={() => convertFieldToForm(value)}
-              />
-            </Fragment>
+            value
           )}
         </div>
-      )
-    }
-
-    return (
-      <div>
-        {fieldIsInput ? (
-          <Fragment>
-            <label htmlFor="field">
-              <strong>{`${label}: `}</strong>
-            </label>
-            {inputType === 'textarea' ? (
-              <textarea
-                rows={5}
-                cols={50}
-                value={field}
-                id="field"
-                name="field"
-                onChange={handleChange}
-                onKeyPress={handleKeyPress}
-              />
-            ) : (
-              <input
-                type="text"
-                value={field}
-                id="field"
-                name="field"
-                onChange={handleChange}
-                onKeyPress={handleKeyPress}
-              />
-            )}
-            <i className="fas fa-check fa-lg" onClick={handleSubmit} />
-            <i
-              className="fas fa-times fa-lg"
-              onClick={() => this.setState({ fieldIsInput: false })}
-            />
-          </Fragment>
-        ) : (
-          <Fragment>
-            <strong>{`${label}: `}</strong>
-            {value}
-            <i
-              className="far fa-edit fa-lg"
-              onClick={() => convertFieldToForm(value)}
-            />
-          </Fragment>
-        )}
+        <div className="col-sm-2">
+          <i
+            className="far fa-edit fa-lg"
+            onClick={() => convertFieldToForm(value)}
+          />
+        </div>
       </div>
     )
   }
 }
 
-const mapStateToProps = state => state
+const mapStateToProps = (state, { model, databaseColumnName, id }) => {
+  return {
+    value: state[model].find(item => item.id === id)[databaseColumnName]
+  }
+}
 
 const mapDispatchToProps = dispatch => {
   return {

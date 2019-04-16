@@ -3,20 +3,24 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { deleteStudentAndUpdate } from '../../store'
 
-const StudentRow = ({ student, index, deleteStudentAndUpdate }) => {
+const StudentRow = ({ student, deleteStudentAndUpdate, campus, history }) => {
   const { id, firstname, lastname, email, gpa, campusName } = student
+  console.log(campus)
   return (
     <tr>
-      <th scope="row">{index}</th>
       <td>
-        <Link to={`/students/${id}`}>{firstname}</Link>
+        {firstname}
+        <i
+          className="fas fa-external-link-alt"
+          onClick={() => history.push(`/students/${id}`)}
+        />
       </td>
       <td>{lastname}</td>
       <td>{email}</td>
       <td>{gpa}</td>
-      <td>{campusName}</td>
+      {campus ? <td /> : <td>{campusName}</td>}
+
       <td>
-        {' '}
         <button
           type="button"
           className="btn btn-danger"

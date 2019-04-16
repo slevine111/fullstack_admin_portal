@@ -1,0 +1,83 @@
+body {
+  margin-top: 10px;
+}
+
+.alert {
+  margin-top: 30px;
+}
+
+.campus-description {
+  margin: 25px 0 30px;
+}
+
+h3,
+.inline {
+  display: inline;
+}
+
+.campus-button-all {
+  display: block;
+  margin: 25px 0;
+}
+
+.badge {
+  margin-right: 15px;
+  font-size: 1.3rem;
+}
+
+.campus-header-all,
+.single-campus-image {
+  margin: 10px 0;
+}
+
+.campus-button-set {
+  padding-left: 50px;
+}
+
+.single-student-image {
+  width: 80%;
+}
+
+.campus-image {
+  width: 100%;
+}
+
+.student-image-and-info {
+  margin-bottom: 10px;
+}
+
+.fa-external-link-alt,
+.fa-check {
+  color: dodgerblue;
+}
+
+.active {
+  font-weight: bolder;
+}
+
+.nav-link {
+  font-size: 1.3rem;
+}
+
+.campus-name-all {
+  font-weight: bolder;
+}
+
+hr {
+  height: 0px;
+  border: none;
+  border-top: 1px solid black;
+}
+
+.fa-edit,
+.fa-external-link-alt {
+  margin-left: 10px;
+}
+
+.fa-check {
+  margin: 0 15px;
+}
+
+.fa-times {
+  color: Red;
+}

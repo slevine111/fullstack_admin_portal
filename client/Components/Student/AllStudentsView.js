@@ -1,34 +1,15 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import TableOfData from '../Shared/TableOfData'
 import CreateStudentForm from './CreateStudentForm'
 
-class AllStudentsView extends Component {
-  constructor() {
-    super()
-    this.state = { formShowed: false }
-  }
-
-  render() {
-    const { students, dataHeaders } = this.props
-    const { formShowed } = this.state
-    return (
-      <div>
-        <button
-          type="button"
-          onClick={() =>
-            this.setState(curState => ({ formShowed: !curState.formShowed }))
-          }
-        >
-          {formShowed ? '-' : '+'}
-        </button>
-
-        {formShowed && <CreateStudentForm />}
-
-        <TableOfData data={students} dataHeaders={dataHeaders} />
-      </div>
-    )
-  }
+const AllStudentsView = ({ students, history }) => {
+  return (
+    <div>
+      <CreateStudentForm />
+      <TableOfData data={students} history={history} />
+    </div>
+  )
 }
 
 const mapStateToProps = ({ students, campuses }) => {
@@ -41,8 +22,7 @@ const mapStateToProps = ({ students, campuses }) => {
     campusName: campusMap[student.campusId]
   }))
   return {
-    students,
-    dataHeaders: ['Index', 'First Name', 'Last Name', 'Email', 'GPA', 'Campus']
+    students
   }
 }
 

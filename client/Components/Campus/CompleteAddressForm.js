@@ -3,7 +3,14 @@ import React from 'react'
 import statesAndAbbreviations from '../../../bin/StateAndAbbreviations'
 import TextFieldInput from '../Shared/TextFieldInput'
 
-const CompleteAddressForm = ({ address, city, state, zip, handleChange }) => {
+const CompleteAddressForm = ({
+  address,
+  city,
+  state,
+  zip,
+  handleChange,
+  handleKeyPress
+}) => {
   const arrayOfTextInputs = [
     { fieldLabel: 'Address', fieldName: 'address', value: address },
     {
@@ -20,7 +27,10 @@ const CompleteAddressForm = ({ address, city, state, zip, handleChange }) => {
 
   return (
     <div>
-      <TextFieldInput {...arrayOfTextInputs[0]} />
+      <TextFieldInput
+        {...arrayOfTextInputs[0]}
+        handleKeyPress={handleKeyPress}
+      />
       <div className="form-row">
         <div className="form-group col-md-6">
           <TextFieldInput {...arrayOfTextInputs[1]} />

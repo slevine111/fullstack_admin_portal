@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { createNewItemAndUpdate } from '../../store'
 import CampusDropdown from '../Shared/CampusDropdown'
@@ -10,7 +10,8 @@ const initialState = {
   email: '',
   imageUrl: '',
   gpa: '',
-  campusId: ''
+  campusId: 'c21e1f88-1b61-42f2-b45e-91a5a84d2c77',
+  formShowed: false
 }
 
 class CreateCampusForm extends Component {
@@ -19,13 +20,6 @@ class CreateCampusForm extends Component {
     this.state = initialState
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-  }
-
-  componentDidMount() {
-    const firstCampusName = document.querySelector('option').textContent
-    this.setState({
-      campusId: this.props.campuses.find(c => c.name === firstCampusName).id
-    })
   }
 
   handleChange({ target }) {
@@ -45,7 +39,7 @@ class CreateCampusForm extends Component {
   }
 
   render() {
-    const { firstname, lastname, email, imageUrl, gpa } = this.state
+    const { firstname, lastname, email, imageUrl, gpa, formShowed } = this.state
     let arrayOfFields = [
       {
         fieldLabel: 'First Name',
@@ -58,15 +52,27 @@ class CreateCampusForm extends Component {
       { fieldLabel: 'GPA', fieldName: 'gpa', value: gpa }
     ].map(field => ({ ...field, handleChange: this.handleChange }))
     return (
-      <form onSubmit={this.handleSubmit}>
-        {arrayOfFields.map(fieldInput => (
-          <TextFieldInput key={fieldInput.fieldLabel} {...fieldInput} />
-        ))}
-        <CampusDropdown handleChange={this.handleChange} />
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
-      </form>
+      <Fragment>
+        <i
+          className={`fa-2x fa${formShowed ? 's' : ''} fa-${
+            formShowed ? 'minus' : 'plus'
+          }-square`}
+          onClick={() =>
+            this.setState(curState => ({ formShowed: !curState.formShowed }))
+          }
+        />
+        {formShowed && (
+          <form onSubmit={this.handleSubmit}>
+            {arrayOfFields.map(fieldInput => (
+              <TextFieldInput key={fieldInput.fieldLabel} {...fieldInput} />
+            ))}
+            <CampusDropdown handleChange={this.handleChange} />
+            <button type="submit" className="btn btn-primary">
+              Submit
+            </button>
+          </form>
+        )}
+      </Fragment>
     )
   }
 }
