@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { createNewItemAndUpdate } from '../../store'
 import CampusDropdown from '../Shared/CampusDropdown'
 import TextFieldInput from '../Shared/TextFieldInput'
+import { image } from 'faker'
 
 const initialState = {
   firstname: '',
@@ -10,7 +11,7 @@ const initialState = {
   email: '',
   imageUrl: '',
   gpa: '',
-  campusId: 'c21e1f88-1b61-42f2-b45e-91a5a84d2c77',
+  campusId: '1d47c041-e794-4c09-9ba8-b6a06f633543',
   formShowed: false
 }
 
@@ -34,7 +35,10 @@ class CreateCampusForm extends Component {
   handleSubmit(event) {
     event.preventDefault()
     return this.props
-      .createNewStudentAndUpdate(this.state)
+      .createNewStudentAndUpdate({
+        ...this.state,
+        imageUrl: this.state.imageUrl || image.people()
+      })
       .then(() => this.setState(initialState))
   }
 

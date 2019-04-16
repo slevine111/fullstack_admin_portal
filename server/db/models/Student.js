@@ -39,6 +39,14 @@ const Student = connection.define('student', {
       min: 0,
       max: 4
     }
+  },
+  fullname: {
+    type: Sequelize.VIRTUAL,
+    get() {
+      return `${this.getDataValue('firstname')} ${this.getDataValue(
+        'lastname'
+      )}`
+    }
   }
 })
 

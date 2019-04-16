@@ -1,39 +1,42 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { deleteStudentAndUpdate } from '../../store'
-import DataAttribute from '../Shared/DataAttribute'
 import TextFieldInput from '../Shared/TextFieldInput'
 import CampusDropdown from '../Shared/CampusDropdown'
 import {
-  StaticComponentInLine,
-  campusHeader
+  StaticFieldInline,
+  SingleItemHeader
 } from '../Shared/UtilityComponents'
-import Atest from '../Shared/Atest'
+import FieldToggleBetweenStaticAndInput from '../Shared/FieldToggleBetweenStaticAndInput'
 
-const HeaderField = Atest(TextFieldInput, campusHeader)
-const TextField = Atest(TextFieldInput, StaticComponentInLine)
-const CampusField = Atest(CampusDropdown, StaticComponentInLine)
-const personNameFields = () => {
+const FullStudentName = props => {
+  console.log('the PROPS', props)
   return (
-    <div>
-      {' '}
-      <HeaderField
-        label="First Name"
-        databaseColumnName="firstname"
-        id={id}
-        model="students"
-        addedClass="inline"
+    <Fragment>
+      <TextFieldInput
+        {...props}
+        value={props.firstname}
+        addedClass="first-name-change"
+        fieldName="firstname"
       />
-      <HeaderField
-        label="Last Name"
-        databaseColumnName="lastname"
-        id={id}
-        model="students"
-        addedClass="inline"
-      />
-    </div>
+      <TextFieldInput {...props} value={props.lastname} fieldName="lastname" />
+    </Fragment>
   )
 }
+
+const StudentName = FieldToggleBetweenStaticAndInput(
+  FullStudentName,
+  SingleItemHeader
+)
+const StudentEmailOrGPA = FieldToggleBetweenStaticAndInput(
+  TextFieldInput,
+  StaticFieldInline
+)
+const StudentCampus = FieldToggleBetweenStaticAndInput(
+  CampusDropdown,
+  StaticFieldInline
+)
+
 class SingleStudent extends Component {
   constructor() {
     super()
@@ -57,38 +60,32 @@ class SingleStudent extends Component {
 
     return (
       <Fragment>
-        <HeaderField
-          label="First Name"
-          databaseColumnName="firstname"
+        <StudentName
+          label="Student Full Name"
+          databaseColumnName="fullname"
           id={id}
           model="students"
           addedClass="inline"
         />
-        <HeaderField
-          label="Last Name"
-          databaseColumnName="lastname"
-          id={id}
-          model="students"
-          addedClass="inline"
-        />
+
         <div className="row student-image-and-info">
           <div className="col-sm-4">
             <img src={imageUrl} className="single-student-image" />
           </div>
           <div className="col-sm-8 align-self-center">
-            <TextField
+            <StudentEmailOrGPA
               label="Email"
               databaseColumnName="email"
               id={id}
               model="students"
             />
-            <TextField
+            <StudentEmailOrGPA
               label="GPA"
               databaseColumnName="gpa"
               id={id}
               model="students"
             />
-            <CampusField
+            <StudentCampus
               label="Campus Name"
               databaseColumnName="campusId"
               campusName={campusName}
@@ -139,3 +136,11 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(SingleStudent)
+
+/*        <StudentName
+          label="Last Name"
+          databaseColumnName="lastname"
+          id={id}
+          model="students"
+          addedClass="inline"
+        />*/

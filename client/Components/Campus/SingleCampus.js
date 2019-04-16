@@ -2,31 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import TableOfData from '../Shared/TableOfData'
 import { deleteCampusAndUpdate } from '../../store'
-import Atest from '../Shared/Atest'
+import FieldToggleBetweenStaticAndInput from '../Shared/FieldToggleBetweenStaticAndInput'
 import TextFieldInput from '../Shared/TextFieldInput'
+import TextAreaInput from '../Shared/TextAreaInput'
 import CompleteAddressForm from './CompleteAddressForm'
-import { StaticComponentBlock, campusHeader } from '../Shared/UtilityComponents'
-
-const TextAreaInput = ({ label, value, handleChange, handleKeyPress }) => {
-  return (
-    <div className="form-group campus-description">
-      <label htmlFor="field">
-        <strong>{`${label}: `}</strong>
-      </label>
-      <div>
-        <textarea
-          rows={5}
-          cols={70}
-          value={value}
-          id="field"
-          name="field"
-          onChange={handleChange}
-          onKeyPress={handleKeyPress}
-        />
-      </div>
-    </div>
-  )
-}
+import { StaticFIeldBlock, SingleItemHeader } from '../Shared/UtilityComponents'
 
 class SingleCampus extends Component {
   constructor() {
@@ -53,13 +33,22 @@ class SingleCampus extends Component {
     const [state, zip] = stateAndZip.split(' ')
     const { id, imageUrl } = selectedCampus
 
-    const H4Field = Atest(TextFieldInput, campusHeader)
-    const TextAreaField = Atest(TextAreaInput, StaticComponentBlock)
-    const AddressForm = Atest(CompleteAddressForm, StaticComponentBlock)
+    const CampusName = FieldToggleBetweenStaticAndInput(
+      TextFieldInput,
+      SingleItemHeader
+    )
+    const CampusDescription = FieldToggleBetweenStaticAndInput(
+      TextAreaInput,
+      StaticFIeldBlock
+    )
+    const CampusAddress = FieldToggleBetweenStaticAndInput(
+      CompleteAddressForm,
+      StaticFIeldBlock
+    )
 
     return (
       <div>
-        <H4Field
+        <CampusName
           label="Name"
           databaseColumnName="name"
           id={id}
@@ -67,7 +56,7 @@ class SingleCampus extends Component {
         />
         <img src={imageUrl} className="single-campus-image" />
 
-        <AddressForm
+        <CampusAddress
           label="Address"
           databaseColumnName="address"
           id={id}
@@ -77,7 +66,7 @@ class SingleCampus extends Component {
           zip={zip}
           model="campuses"
         />
-        <TextAreaField
+        <CampusDescription
           label="Description"
           databaseColumnName="description"
           id={id}

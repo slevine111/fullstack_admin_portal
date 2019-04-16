@@ -4,14 +4,17 @@ const TextFieldInput = ({
   fieldLabel,
   fieldName,
   value,
+  addedClass,
   handleChange,
   handleKeyPress
 }) => {
-  console.log(value)
+  console.log(fieldLabel)
   return (
     <div
       className={`${
-        handleKeyPress && fieldLabel !== 'Address' ? 'inline' : 'form-group'
+        handleKeyPress && !['Address', 'Full Name'].includes(fieldLabel)
+          ? 'inline'
+          : 'form-group'
       }`}
     >
       <label htmlFor={fieldName}>
@@ -20,8 +23,10 @@ const TextFieldInput = ({
       <input
         type="text"
         className={`${
-          handleKeyPress && fieldLabel !== 'Address' ? '' : 'form-control'
-        } `}
+          handleKeyPress && !['Address', 'Full Name'].includes(fieldLabel)
+            ? ''
+            : 'form-control'
+        } ${addedClass ? addedClass : ''}`}
         id={fieldName}
         name={fieldName}
         value={value}

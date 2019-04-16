@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { createNewItemAndUpdate } from '../../store'
 import CompleteAddressForm from './CompleteAddressForm'
 import TextFieldInput from '../Shared/TextFieldInput'
+import { image } from 'faker'
 
 const initialState = {
   name: '',
@@ -46,7 +47,7 @@ class CreateCampusForm extends Component {
     return this.props
       .createNewCampusAndUpdate({
         name,
-        imageUrl,
+        imageUrl: imageUrl || image.city(),
         description,
         address: `${address}, ${city}, ${state} ${zip}`
       })

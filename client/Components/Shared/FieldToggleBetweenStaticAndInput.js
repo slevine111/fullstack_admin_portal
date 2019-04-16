@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { updateItemAndChangeStore } from '../../store'
-import CompleteAddressForm from '../Campus/CompleteAddressForm'
-import CampusDropdown from './CampusDropdown'
-import TextFieldInput from './TextFieldInput'
 
-const AtestWrapper = (ComponentOne, ComponentTwo) => {
+const FieldToggleBetweenStaticAndInput = (InputComponent, StaticComponent) => {
   class DataAttribute extends Component {
     constructor() {
       super()
@@ -24,9 +21,7 @@ const AtestWrapper = (ComponentOne, ComponentTwo) => {
     }
 
     handleChange({ target }) {
-      if (this.props.address) {
-        console.log(target)
-        console.log(this.state)
+      if (this.props.address || this.props.label === 'Student Full Name') {
         this.setState({ [target.name]: target.value }, () =>
           console.log(this.state)
         )
@@ -36,6 +31,7 @@ const AtestWrapper = (ComponentOne, ComponentTwo) => {
     }
 
     handleSubmit() {
+      console.log('this.state', this.state)
       const {
         updateItemAndChangeStore,
         id,
@@ -47,9 +43,13 @@ const AtestWrapper = (ComponentOne, ComponentTwo) => {
       let updatedField = this.props.address
         ? `${address}, ${city}, ${state} ${zip}`
         : this.state.field
-      const updatedItem = {
-        ...data,
-        [databaseColumnName]: updatedField
+
+      let updatedItem
+      if (this.state.firstname) {
+        const { firstname, lastname } = this.state
+        updatedItem = { ...data, firstname, lastname }
+      } else {
+        updatedItem = { ...data, [databaseColumnName]: updatedField }
       }
 
       return updateItemAndChangeStore(model, id, updatedItem).then(() => {
@@ -64,6 +64,12 @@ const AtestWrapper = (ComponentOne, ComponentTwo) => {
           city: this.props.city,
           state: this.props.state,
           zip: this.props.zip,
+          fieldIsInput: true
+        })
+      } else if (this.props.label === 'Student Full Name') {
+        this.setState({
+          firstname: this.props.firstname,
+          lastname: this.props.lastname,
           fieldIsInput: true
         })
       } else {
@@ -86,7 +92,7 @@ const AtestWrapper = (ComponentOne, ComponentTwo) => {
 
       return this.state.fieldIsInput ? (
         <div>
-          <ComponentOne
+          <InputComponent
             {...eventMethods}
             {...this.props}
             {...this.state}
@@ -99,7 +105,7 @@ const AtestWrapper = (ComponentOne, ComponentTwo) => {
           />
         </div>
       ) : (
-        <ComponentTwo
+        <StaticComponent
           {...this.props}
           convertFieldToForm={this.convertFieldToForm}
         />
@@ -109,10 +115,15 @@ const AtestWrapper = (ComponentOne, ComponentTwo) => {
 
   const mapStateToProps = (state, { model, databaseColumnName, id }) => {
     const data = state[model].find(item => item.id === id)
-    return {
+    let obj = {
       data,
       value: data[databaseColumnName]
     }
+    if (databaseColumnName === 'fullname') {
+      const [firstname, lastname] = obj.value.split(' ')
+      obj = { ...obj, firstname, lastname }
+    }
+    return obj
   }
 
   const mapDispatchToProps = dispatch => {
@@ -128,4 +139,4 @@ const AtestWrapper = (ComponentOne, ComponentTwo) => {
   )(DataAttribute)
 }
 
-export default AtestWrapper
+export default FieldToggleBetweenStaticAndInput

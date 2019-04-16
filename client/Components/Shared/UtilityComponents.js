@@ -1,6 +1,6 @@
 import React from 'react'
 
-const StaticComponentInLine = ({
+const StaticFieldInline = ({
   label,
   value,
   convertFieldToForm,
@@ -33,12 +33,7 @@ const StaticComponentInLine = ({
   )
 }
 
-const StaticComponentBlock = ({
-  className,
-  label,
-  value,
-  convertFieldToForm
-}) => {
+const StaticFIeldBlock = ({ className, label, value, convertFieldToForm }) => {
   return (
     <div className={className}>
       <div>
@@ -53,7 +48,7 @@ const StaticComponentBlock = ({
   )
 }
 
-const campusHeader = ({ value, convertFieldToForm, addedClass, label }) => {
+const SingleItemHeader = ({ value, convertFieldToForm, addedClass, label }) => {
   return (
     <div className={addedClass}>
       <h4 className="inline">{value}</h4>
@@ -69,4 +64,4 @@ const campusHeader = ({ value, convertFieldToForm, addedClass, label }) => {
   )
 }
 
-export { StaticComponentInLine, StaticComponentBlock, campusHeader }
+export { StaticFieldInline, StaticFIeldBlock, SingleItemHeader }
