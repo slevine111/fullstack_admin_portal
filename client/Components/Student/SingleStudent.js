@@ -9,8 +9,7 @@ import {
 } from '../Shared/UtilityComponents'
 import FieldToggleBetweenStaticAndInput from '../Shared/FieldToggleBetweenStaticAndInput'
 
-const FullStudentName = props => {
-  console.log('the PROPS', props)
+const FullStudentNameInput = props => {
   return (
     <Fragment>
       <TextFieldInput
@@ -25,7 +24,7 @@ const FullStudentName = props => {
 }
 
 const StudentName = FieldToggleBetweenStaticAndInput(
-  FullStudentName,
+  FullStudentNameInput,
   SingleItemHeader
 )
 const StudentEmailOrGPA = FieldToggleBetweenStaticAndInput(

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import TableOfData from '../Shared/TableOfData'
+import TableOfStudents from '../Student/TableOfStudents'
 import { deleteCampusAndUpdate } from '../../store'
 import FieldToggleBetweenStaticAndInput from '../Shared/FieldToggleBetweenStaticAndInput'
 import TextFieldInput from '../Shared/TextFieldInput'
@@ -84,11 +84,7 @@ class SingleCampus extends Component {
           </button>
         </div>
         {studentsOfCampus[0] ? (
-          <TableOfData
-            data={studentsOfCampus}
-            history={history}
-            campus={selectedCampus.name}
-          />
+          <TableOfStudents history={history} campus={selectedCampus.name} />
         ) : (
           <h6 className="alert alert-warning">
             This campus has no students :(. Find some students before it shuts
