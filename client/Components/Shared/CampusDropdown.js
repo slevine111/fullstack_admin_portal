@@ -10,7 +10,7 @@ const CampusDropdown = ({ campuses, handleChange, currentCampusId }) => {
         id="campuses"
         name="campusId"
         onChange={handleChange}
-        defaultValue={currentCampusId || campuses[0].id}
+        defaultValue={currentCampusId}
       >
         {campuses.map(campus => {
           const { id, name } = campus

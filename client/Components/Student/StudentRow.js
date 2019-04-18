@@ -4,7 +4,6 @@ import { deleteStudentAndUpdate } from '../../store'
 
 const StudentRow = ({ student, deleteStudentAndUpdate, campus, history }) => {
   const { id, firstname, lastname, email, gpa, campusName } = student
-  console.log(campus)
   return (
     <tr>
       <td>

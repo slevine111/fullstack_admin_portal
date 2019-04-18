@@ -8,7 +8,6 @@ const TextFieldInput = ({
   handleChange,
   handleKeyPress
 }) => {
-  console.log(fieldLabel)
   return (
     <div
       className={`${

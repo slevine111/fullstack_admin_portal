@@ -22,16 +22,13 @@ const FieldToggleBetweenStaticAndInput = (InputComponent, StaticComponent) => {
 
     handleChange({ target }) {
       if (this.props.address || this.props.label === 'Student Full Name') {
-        this.setState({ [target.name]: target.value }, () =>
-          console.log(this.state)
-        )
+        this.setState({ [target.name]: target.value })
       } else {
-        this.setState({ field: target.value }, () => console.log(this.state))
+        this.setState({ field: target.value })
       }
     }
 
     handleSubmit() {
-      console.log('this.state', this.state)
       const {
         updateItemAndChangeStore,
         id,

@@ -11,7 +11,7 @@ const initialState = {
   email: '',
   imageUrl: '',
   gpa: '',
-  campusId: '1d47c041-e794-4c09-9ba8-b6a06f633543',
+  campusId: '',
   formShowed: false
 }
 
@@ -21,15 +21,17 @@ class CreateCampusForm extends Component {
     this.state = initialState
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.currentCampusId !== this.props.currentCampusId) {
+      this.setState({ campusId: this.props.currentCampusId })
+    }
   }
 
   handleChange({ target }) {
-    this.setState(
-      {
-        [target.name]: target.value
-      },
-      () => console.log(this.state)
-    )
+    this.setState({ [target.name]: target.value })
   }
 
   handleSubmit(event) {
@@ -42,8 +44,22 @@ class CreateCampusForm extends Component {
       .then(() => this.setState(initialState))
   }
 
+  handleClick() {
+    const { formShowed, campusId } = this.state
+    const newValue = formShowed ? false : campusId !== ''
+    this.setState({ formShowed: newValue })
+  }
+
   render() {
-    const { firstname, lastname, email, imageUrl, gpa, formShowed } = this.state
+    const {
+      firstname,
+      lastname,
+      email,
+      imageUrl,
+      gpa,
+      campusId,
+      formShowed
+    } = this.state
     let arrayOfFields = [
       {
         fieldLabel: 'First Name',
@@ -70,7 +86,10 @@ class CreateCampusForm extends Component {
             {arrayOfFields.map(fieldInput => (
               <TextFieldInput key={fieldInput.fieldLabel} {...fieldInput} />
             ))}
-            <CampusDropdown handleChange={this.handleChange} />
+            <CampusDropdown
+              handleChange={this.handleChange}
+              currentCampusId={campusId}
+            />
             <button type="submit" className="btn btn-primary">
               Submit
             </button>
@@ -83,7 +102,8 @@ class CreateCampusForm extends Component {
 
 const mapStateToProps = ({ campuses }) => {
   return {
-    campuses: campuses.map(campus => ({ id: campus.id, name: campus.name }))
+    campuses: campuses.map(campus => ({ id: campus.id, name: campus.name })),
+    currentCampusId: campuses[0] ? campuses[0].id : ''
   }
 }
 

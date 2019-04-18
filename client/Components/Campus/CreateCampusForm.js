@@ -25,12 +25,7 @@ class CreateCampusForm extends Component {
   }
 
   handleChange({ target }) {
-    this.setState(
-      {
-        [target.name]: target.value
-      },
-      () => console.log(this.state)
-    )
+    this.setState({ [target.name]: target.value })
   }
 
   handleSubmit(event) {
