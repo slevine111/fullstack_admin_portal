@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "postinstall": "webpack",
-    "start": "node server/index.js & npm run seed",
+    "postinstall": "webpack  & npm run seed",
+    "start": "node server/index.js",
     "start:dev": "npm run start-server & npm run build-watch",
     "start-server": "./node_modules/.bin/nodemon server/index.js --watch server -e js,html",
     "build-watch": "webpack -w",
