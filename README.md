@@ -1,1 +1,1 @@
-heroku link is 
+heroku link is https://my-admin-portal-site.herokuapp.com/#/. (There are pictures but aleast for me, they take quite some time). Also, due to some stuff I added, React code needs a little more refactoring and may be a bit confusing to follow (it was even way more confusing before my current round of refactoring)
